@@ -1,0 +1,21 @@
+.header {
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.header__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: large;
+    font-weight: 500;
+    padding: 10px 20px; 
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));    
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;    
+}
