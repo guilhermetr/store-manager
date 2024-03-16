@@ -1,0 +1,11 @@
+<mat-card class="header">
+    <div class="header__content">
+      <p>Quantidade de Produtos: {{ products.length }}</p>
+      <button mat-flat-button color="primary" (click)="openProductFormDialog()">Criar Produto</button>
+    </div>
+</mat-card>
+<div class="product-grid">
+    <div *ngFor="let product of products; let i = index">
+        <app-product-card [product]="product"></app-product-card>
+    </div>
+</div>

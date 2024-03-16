@@ -1,0 +1,8 @@
+<p style="font-size: large;" mat-dialog-title *ngIf="data.title">{{ data.title }}</p>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button color="primary" (click)="onAcceptClick()">Aceitar</button>
+    <button mat-button (click)="onCancelClick()">Cancelar</button>
+</mat-dialog-actions>

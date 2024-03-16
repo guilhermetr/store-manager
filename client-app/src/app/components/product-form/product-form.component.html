@@ -1,0 +1,15 @@
+<div class="container">
+    <h2 class="title">{{ this.isEditForm ? 'Editar Produto' : 'Criar Produto' }}</h2>
+    <hr>
+    <form class="form" (ngSubmit)="onSubmit()" #productForm="ngForm">
+        <mat-form-field class="form-row">
+            <mat-label for="title">Nome</mat-label>   
+            <input matInput type="text" class="form-control" id="title" name="title" [(ngModel)]="product.name" required>
+        </mat-form-field>
+        <mat-form-field class="form-row">
+            <mat-label for="price">Preço</mat-label>
+            <input matInput type="number" class="form-control" id="price" name="price" [(ngModel)]="product.price" required>
+        </mat-form-field> 
+      <button mat-flat-button class="submit-btn" color="primary" type="submit" [disabled]="!productForm.valid">{{ this.isEditForm ? 'Salvar' : 'Aceitar' }}</button>
+    </form>
+</div>
