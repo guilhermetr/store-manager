@@ -1,0 +1,11 @@
+<mat-card class="header">
+    <div class="header__content">
+      <p>Quantidade de Pedidos: {{ orders.length }}</p>
+      <button mat-flat-button color="primary" (click)="openOrderFormDialog()">Criar Pedido</button>
+    </div>
+</mat-card>
+<div class="order-grid">
+    <div *ngFor="let order of orders; let i = index">
+        <app-order-card [order]="order"></app-order-card>
+    </div>
+</div>

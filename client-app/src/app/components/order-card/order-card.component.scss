@@ -1,0 +1,44 @@
+.card {    
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;    
+}
+
+.provider {
+    font-weight: 500;
+}
+
+.comments {
+    width: 65%;
+    text-align: end;
+    font-weight: 500;    
+}
+  
+.price {
+    font-weight: bold;
+    font-size: large;    
+}
+
+.state {
+    padding: 4px 7px;
+    border-radius: 5px;
+    color: rgb(75, 75, 75);
+}

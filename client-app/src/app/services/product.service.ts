@@ -73,8 +73,8 @@ export class ProductService implements OnInit {
     return this.products;
   }
 
-  getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  getProduct(id: number): Product | undefined {
+    return this.products.find(product => product.id == id);
   }
 
   addProduct(product: Product): Observable<Product> {

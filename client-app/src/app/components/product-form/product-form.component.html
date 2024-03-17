@@ -10,6 +10,6 @@
             <mat-label for="price">Preço</mat-label>
             <input matInput type="number" class="form-control" id="price" name="price" [(ngModel)]="product.price" required>
         </mat-form-field> 
-      <button mat-flat-button class="submit-btn" color="primary" type="submit" [disabled]="!productForm.valid">{{ this.isEditForm ? 'Salvar' : 'Aceitar' }}</button>
+      <button mat-flat-button class="submit-btn" color="primary" type="submit" [disabled]="!productForm.valid">{{ this.isEditForm ? 'Atualizar ' : 'Criar ' }} Produto</button>
     </form>
 </div>

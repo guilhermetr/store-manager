@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,9 @@ import { ProductEditComponent } from './pages/product-edit/product-edit.componen
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { OrderEditComponent } from './pages/order-edit/order-edit.component';
+import { OrderFormComponent } from './components/order-form/order-form.component';
+import { OrderCardComponent } from './components/order-card/order-card.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,10 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     ProductEditComponent,
     ProductFormComponent,
     ProductCardComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    OrderEditComponent,
+    OrderFormComponent,
+    OrderCardComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +50,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatSnackBarModule,
     MatInputModule,
     MatMenuModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
