@@ -28,6 +28,16 @@ export class AuthService {
     this._isAuthenticated = false;
   }
 
+  register(username: string, password: string): boolean {
+    const userExists = this.users.has(username);
+    if (userExists) {
+      return false;      
+    } else {
+      this.users.set(username, password);
+      return true;
+    }    
+  }
+
   isAuthenticated(): boolean {
     return this._isAuthenticated;
   }

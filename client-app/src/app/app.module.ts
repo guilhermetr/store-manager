@@ -23,6 +23,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { OrderEditComponent } from './pages/order-edit/order-edit.component';
 import { OrderFormComponent } from './components/order-form/order-form.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,9 +36,9 @@ import { OrderCardComponent } from './components/order-card/order-card.component
     ConfirmationDialogComponent,
     OrderEditComponent,
     OrderFormComponent,
-    OrderCardComponent
     OrderCardComponent,
     LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
