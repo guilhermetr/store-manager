@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     ProductFormComponent,
     ProductCardComponent,
     ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    OrderFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatSnackBarModule,
     MatInputModule,
     MatMenuModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
