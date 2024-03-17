@@ -1,0 +1,42 @@
+<mat-card class="card">
+    <div class="card-header">
+        <h2>Pedido{{ ' ' + order.id}}</h2>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Ações">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item [disabled]="!isOrderActive(order)" (click)="openOrderFormDialog()">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+            </button>
+            <button mat-menu-item (click)="isOrderActive(order) ? openFinishConfirmationDialog() : openReactivateConfirmationDialog()">
+                <mat-icon>{{ isOrderActive(order) ? 'done' : 'undo' }}</mat-icon>
+                <span>{{ isOrderActive(order) ? 'Finalizar' : 'Reativar' }}</span>
+            </button>
+            <button mat-menu-item [disabled]="!isOrderActive(order)" (click)="openDeleteConfirmationDialog()">
+                <mat-icon>delete</mat-icon>
+                <span>Eliminar</span>
+            </button>
+        </mat-menu>
+    </div>
+    <hr style="width: 100%;">    
+    <div class="card-row">
+        <span>Fornecedor:</span>
+        <span class="provider">{{ provider.name }}</span>
+    </div>
+    <hr *ngIf="order.comments" style="width: 100%;">
+    <div *ngIf="order.comments" class="card-row">
+        <span>Observações:</span>
+        <span class="comments">{{ order.comments }}</span>
+    </div>
+    <hr style="width: 100%;">
+    <div *ngFor="let orderItem of order.orderItems" class="card-row">
+        <span>{{ getProduct(orderItem.productId!).name + ' '}}<span style="font-weight: bold;">x {{ orderItem.quantity }}</span></span>
+        <span style="font-weight: 500;">{{ getProduct(orderItem.productId!).price! * orderItem.quantity! | currency }}</span>
+    </div>
+    <hr style="width: 100%;">
+    <div class="card-row">        
+        <span class="state" [style.background-color]="isOrderActive(order) ? '#C0F8B4' : '#F6F8B4'">{{ isOrderActive(order) ? 'Ativo' : 'Finalizado' }}</span>
+        <span class="price">{{ getOrderTotal() | currency }}</span>
+    </div>
+</mat-card>
