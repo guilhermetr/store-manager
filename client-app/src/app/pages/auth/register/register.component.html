@@ -1,0 +1,36 @@
+<div class="register-container">
+    <mat-card class="register-form">
+        <h2>Cadastre-se</h2>
+        <form (ngSubmit)="register()" #loginForm="ngForm" [formGroup]="form">
+            <mat-form-field class="form-row">
+                <mat-label for="username">Usuario</mat-label>
+                <input matInput
+                    class="form-control"
+                    type="text" 
+                    formControlName="username">
+            </mat-form-field>
+            <mat-form-field class="form-row">
+                <mat-label for="password">Senha</mat-label>
+                <input matInput 
+                    type="password"
+                    formControlName="password">
+              </mat-form-field>
+            <mat-form-field class="form-row">
+                <mat-label for="password">Repetir Senha</mat-label>
+                <input matInput
+                    type="password"
+                    formControlName="confirmPassword" 
+                    [errorStateMatcher]="matcher">
+                <mat-error *ngIf="form.hasError('notSame')">
+                    As senhas não coincidem
+                </mat-error>  
+              </mat-form-field>
+            <button mat-flat-button 
+                class="submit-btn" 
+                color="primary"
+                [disabled]="!loginForm.valid || !arePasswordsMatching()">
+                Criar Conta
+            </button>
+        </form>
+    </mat-card>  
+</div>
