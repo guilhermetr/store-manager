@@ -35,6 +35,8 @@ import { OrderCardComponent } from './components/order-card/order-card.component
     OrderEditComponent,
     OrderFormComponent,
     OrderCardComponent
+    OrderCardComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
