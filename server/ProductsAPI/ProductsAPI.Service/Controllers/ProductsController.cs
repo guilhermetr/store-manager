@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Dtos;
 using ProductsAPI.Service.Models;
+using ProductsAPI.Service.Services;
 
 namespace ProductsAPI.Service.Controllers
 {
+    [TypeFilter(typeof(TokenAuthorizationFilter))]
     [ApiController]
     [Route("[controller]")]
     public class ProductsController : ControllerBase
@@ -131,6 +134,7 @@ namespace ProductsAPI.Service.Controllers
 
             return NoContent();
         }
+        
     }
 
 }
