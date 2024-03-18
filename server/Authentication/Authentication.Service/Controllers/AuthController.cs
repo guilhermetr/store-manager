@@ -1,6 +1,7 @@
 ﻿using Authentication.Service.DataContext;
 using Authentication.Service.Dtos;
 using Authentication.Service.Models;
+using AuthenticationService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,28 +18,44 @@ namespace AuthenticationService.Controllers
     {
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
+        private readonly IpAddressLockService _ipAddressLockService;
 
-        public AuthController(IConfiguration config, ApplicationDbContext context)
+        private readonly int MaxFailedAttempts;
+        private readonly int BlockDurationMinutes;
+
+        public AuthController(IConfiguration config, ApplicationDbContext context, IpAddressLockService ipAddressLockService)
         {
             _config = config;
             _context = context;
+            _ipAddressLockService = ipAddressLockService;
+            MaxFailedAttempts = _config.GetValue<int>("IpAddressLockSettings:MaxFailedAttempts");
+            BlockDurationMinutes = _config.GetValue<int>("IpAddressLockSettings:BlockDurationMinutes");
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthRequestDto model)
-        {            
+        {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress;            
+            if (_ipAddressLockService.IsIpAddressBlocked(ipAddress))
+            {
+                return BadRequest($"Endereço IP bloqueado por {BlockDurationMinutes} minutos. Por favor novamente tente mais tarde.");
+            }
+
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == model.Username);
             if (user == null)
             {
-                return BadRequest("Invalid username or password");
+                _ipAddressLockService.AddFailedAttempt(ipAddress);
+                return BadRequest($"Usuario ou senha inválidos. Seu endereço IP será bloqueado depois de {MaxFailedAttempts} erros.");
             }
             
             string hashedPassword = HashPassword(model.Password);
             if (user.PasswordHash != hashedPassword)
             {
-                return BadRequest("Invalid username or password");
+                _ipAddressLockService.AddFailedAttempt(ipAddress);
+                return BadRequest($"Usuario ou senha inválidos. Seu endereço IP será bloqueado depois de {MaxFailedAttempts} erros.");
             }
 
+            _ipAddressLockService.ResetFailedAttempts(ipAddress);
             var token = GenerateJwtToken(user);
             return Ok(new { token });
         }
@@ -49,7 +66,7 @@ namespace AuthenticationService.Controllers
             var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Username == model.Username);
             if (existingUser != null)
             {
-                return Conflict("Username already exists");
+                return Conflict("Usuario já existe");
             }
 
             string passwordHash = HashPassword(model.Password);
@@ -57,7 +74,7 @@ namespace AuthenticationService.Controllers
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
-            return Ok("Registration successful");
+            return Ok("Usuario registrado com sucesso!");
         }
 
         [HttpPost("validate")]
@@ -77,11 +94,11 @@ namespace AuthenticationService.Controllers
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
-                return Ok("Token is valid");
+                return Ok("Token JWT válida");
             }
             catch (Exception ex)
             {                
-                return BadRequest("Token validation error: " + ex.Message);
+                return BadRequest("Erros de validação de Token: " + ex.Message);
             }
         }
 

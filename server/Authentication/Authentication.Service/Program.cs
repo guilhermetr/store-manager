@@ -1,4 +1,5 @@
 using Authentication.Service.DataContext;
+using AuthenticationService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +20,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]);
 
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -33,6 +33,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+builder.Services.AddScoped<IpAddressLockService>();
 
 builder.Services.AddAuthorization();
 
