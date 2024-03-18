@@ -26,7 +26,7 @@ export class ProductFormComponent {
     if (this.isEditForm) {
       this.product = { ...this.data.product };
     } else {
-      this.product = { id: 0, name: '', active: true };
+      this.product = { id: 0, name: '', isActive: true };
     }
   }
 

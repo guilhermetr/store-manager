@@ -7,7 +7,7 @@ using ProductsAPI.Service.Models;
 namespace ProductsAPI.Service.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -87,6 +87,11 @@ namespace ProductsAPI.Service.Controllers
                 return NotFound();
             }
 
+            if (!product.IsActive && !productDto.IsActive)
+            {
+                return BadRequest("O produto está inativo e não pode ser atualizado.");
+            }
+
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.IsActive = productDto.IsActive;
@@ -120,7 +125,8 @@ namespace ProductsAPI.Service.Controllers
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            product.IsActive = false;
+            
             await _context.SaveChangesAsync();
 
             return NoContent();
