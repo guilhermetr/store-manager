@@ -38,7 +38,7 @@ namespace AuthenticationService.Controllers
             var ipAddress = HttpContext.Connection.RemoteIpAddress;            
             if (_ipAddressLockService.IsIpAddressBlocked(ipAddress))
             {
-                return BadRequest($"Endereço IP bloqueado por {BlockDurationMinutes} minutos. Por favor novamente tente mais tarde.");
+                return BadRequest($"Endereço IP bloqueado por {BlockDurationMinutes} minutos. Por favor tente novamente mais tarde.");
             }
 
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == model.Username);
@@ -74,7 +74,7 @@ namespace AuthenticationService.Controllers
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
-            return Ok("Usuario registrado com sucesso!");
+            return Ok();
         }
 
         [HttpPost("validate")]
@@ -94,7 +94,7 @@ namespace AuthenticationService.Controllers
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
-                return Ok("Token JWT válida");
+                return Ok();
             }
             catch (Exception ex)
             {                

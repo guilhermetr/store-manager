@@ -42,14 +42,13 @@ export class RegisterComponent {
     return passwordControl.value === confirmPasswordControl.value;
   }
   
-
   register() {
-    const result = this.authService.register(this.form.get('username')!.value,  this.form.get('password')!.value);
-    if (result) {
-      this.router.navigate(['/login']);
-    } else {
-      this.messageDisplayService.displayMessage('Usuario já existe.')
-    }
+    this.authService.register(this.form.get('username')!.value,  this.form.get('password')!.value).subscribe((isRegistered: boolean) => {
+      if (isRegistered) {
+        this.messageDisplayService.displayMessage('Usuario criado com sucesso!');
+        this.router.navigate(['/login']);
+      }
+    });
   }
   
 }

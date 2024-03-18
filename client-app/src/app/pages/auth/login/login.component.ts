@@ -20,12 +20,11 @@ export class LoginComponent {
   ) { }
 
   login() {
-    const result = this.authService.login(this.username, this.password);
-    if (result) {
-      this.router.navigate(['/products']);
-    } else {
-      this.messageDisplayService.displayMessage('Usuario ou senha incorretos. Tente novamente.')
-    }
+    this.authService.login(this.username, this.password).subscribe((loggedIn: boolean) => {
+      if (loggedIn) {
+        this.router.navigate(['/products']);
+      }
+    });
   }
   
 }
