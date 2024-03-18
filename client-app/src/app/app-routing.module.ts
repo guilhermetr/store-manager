@@ -18,12 +18,12 @@ const routes: Routes = [
   {
     path: 'products',
     component: ProductEditComponent,
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'orders',
     component: OrderEditComponent,
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   { 
     path: '', 

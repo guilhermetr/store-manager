@@ -18,7 +18,7 @@ import { Product } from 'src/app/models/product.model';
 export class OrderCardComponent {
   
   @Input() order!: Order;
-  provider!: Provider;
+  provider: Provider | undefined;
 
   constructor(
     private dialogRef: MatDialog, 
@@ -29,12 +29,13 @@ export class OrderCardComponent {
   ) {}
 
   ngOnInit(): void {
-    this.provider = this.providerService.getProvider(this.order.providerId!)!;
+    this.providerService.getProvider(this.order.providerId!).subscribe((provider: Provider) => {
+      this.provider = provider;
+    });
   }
 
   isOrderActive(): boolean {
-    var test = OrderStatus.Active.valueOf();
-    return this.order.status == OrderStatus.Active.valueOf();
+    return this.order.status == OrderStatus.Active;
   }
 
   getProduct(id: number): Product {

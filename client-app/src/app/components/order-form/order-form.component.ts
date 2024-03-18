@@ -40,8 +40,8 @@ export class OrderFormComponent {
       this.order = { orderItems: [{}], comments: '', status: OrderStatus.Active };
     }
 
-    this.providers = this.providerService.getProviders();
-    this.availableProducts = this.productService.getProducts();
+    this.providerService.providers$.subscribe((providers: Provider[]) => this.providers = providers);
+    this.productService.products$.subscribe((products: Product[]) => this.availableProducts = products);
   }
 
   onAddOrderItem(): void {

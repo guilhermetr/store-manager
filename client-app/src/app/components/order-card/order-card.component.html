@@ -22,7 +22,7 @@
     <hr style="width: 100%;">    
     <div class="card-row">
         <span>Fornecedor:</span>
-        <span class="provider">{{ provider.name }}</span>
+        <span class="provider">{{ provider?.name }}</span>
     </div>
     <hr *ngIf="order.comments" style="width: 100%;">
     <div *ngIf="order.comments" class="card-row">
