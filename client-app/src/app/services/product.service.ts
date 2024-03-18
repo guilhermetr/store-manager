@@ -3,6 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { Product } from '../models/product.model';
+import { MessageDisplayService } from './message-display.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,15 @@ export class ProductService {
   private productsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>(this.products);
   public products$: Observable<Product[]> = this.productsSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private messageDisplayService: MessageDisplayService) {
     this.loadProducts();
   }
 
   private loadProducts(): void {
     this.http.get<Product[]>(this.apiUrl).pipe(
       catchError(error => {
-        return throwError(() => new Error('Erro carregando produtos:', error));
+        this.messageDisplayService.displayMessage('Erro carregando produtos');
+        return throwError(() => new Error(error));
       })
     ).subscribe(products => {      
       this.products = products;
@@ -45,7 +47,8 @@ export class ProductService {
         this.productsSubject.next(this.products);        
       }),
       catchError(error => {
-        return throwError(() => new Error('Erro criando produto:', error));
+        this.messageDisplayService.displayMessage('Erro criando produto');
+        return throwError(() => new Error(error));
       })
     );
   }
@@ -63,7 +66,8 @@ export class ProductService {
         }
       }),
       catchError(error => {
-        return throwError(() => new Error('Erro atualizando produto:', error));
+        this.messageDisplayService.displayMessage('Erro atualizando produto');
+        return throwError(() => new Error(error));
       })
     );
   }
@@ -78,7 +82,8 @@ export class ProductService {
         }
       }),
       catchError(error => {
-        return throwError(() => new Error('Erro borrando produto:', error));
+        this.messageDisplayService.displayMessage('Erro eliminando produto');
+        return throwError(() => new Error(error));
       })
     );
   }

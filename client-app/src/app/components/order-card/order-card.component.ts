@@ -18,7 +18,7 @@ import { Product } from 'src/app/models/product.model';
 export class OrderCardComponent {
   
   @Input() order!: Order;
-  provider!: Provider;
+  provider: Provider | undefined;
 
   constructor(
     private dialogRef: MatDialog, 
@@ -29,11 +29,13 @@ export class OrderCardComponent {
   ) {}
 
   ngOnInit(): void {
-    this.provider = this.providerService.getProvider(this.order.providerId!)!;
+    this.providerService.getProvider(this.order.providerId!).subscribe((provider: Provider) => {
+      this.provider = provider;
+    });
   }
 
-  isOrderActive(order: Order): boolean {
-    return order.status == OrderStatus.Active;
+  isOrderActive(): boolean {
+    return this.order.status == OrderStatus.Active;
   }
 
   getProduct(id: number): Product {
@@ -42,7 +44,10 @@ export class OrderCardComponent {
 
   getOrderTotal(): number {
     return this.order.orderItems
-     .map((orderItem) => orderItem.productId && orderItem.quantity ? this.productService.getProduct(orderItem.productId)!.price! * orderItem.quantity! : 0)
+     .map((orderItem) => {
+        var product = this.productService.getProduct(orderItem.productId!)
+        return product && orderItem.quantity ? product.price! * orderItem.quantity! : 0
+      })
      .reduce((prev, current) => prev + current, 0);
   }
 
@@ -66,13 +71,13 @@ export class OrderCardComponent {
       if (result === true) {        
         this.orderService.deleteOrder(this.order.id!).subscribe({
           next: () => {
-            this.messageDisplayService.displayMessage('Pedido desativado.');
+            this.messageDisplayService.displayMessage('Pedido eliminado.');
           },
           error: (error) => {
             console.error('Error eliminating order:', error);
             this.messageDisplayService.displayMessage('Ocorreu um erro ao eliminar o pedido. Por favor, tente novamente.');
           }
-        });;
+        });
       }
     });
   }
