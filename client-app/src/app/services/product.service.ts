@@ -9,7 +9,7 @@ import { Product } from '../models/product.model';
 })
 export class ProductService {
 
-  private apiUrl = 'http://localhost:5046/products';
+  private apiUrl = 'https://localhost:7046/products';
 
   private products: Product[] = [];
   private productsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>(this.products);
@@ -22,7 +22,7 @@ export class ProductService {
   private loadProducts(): void {
     this.http.get<Product[]>(this.apiUrl).pipe(
       catchError(error => {
-        return throwError(() => new Error('Could not load products:', error));
+        return throwError(() => new Error('Erro carregando produtos:', error));
       })
     ).subscribe(products => {      
       this.products = products;
@@ -45,7 +45,7 @@ export class ProductService {
         this.productsSubject.next(this.products);        
       }),
       catchError(error => {
-        return throwError(() => new Error('Could not create product:', error));
+        return throwError(() => new Error('Erro criando produto:', error));
       })
     );
   }
@@ -63,7 +63,7 @@ export class ProductService {
         }
       }),
       catchError(error => {
-        return throwError(() => new Error('Could not update product:', error));
+        return throwError(() => new Error('Erro atualizando produto:', error));
       })
     );
   }
@@ -78,7 +78,7 @@ export class ProductService {
         }
       }),
       catchError(error => {
-        return throwError(() => new Error('Could not update product:', error));
+        return throwError(() => new Error('Erro borrando produto:', error));
       })
     );
   }
