@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrdersAPI.Service.Models;
 using ProductsAPI.Service.Models;
 
 namespace ProductsAPI.Service.DataContext
@@ -11,6 +12,7 @@ namespace ProductsAPI.Service.DataContext
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Provider> Providers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

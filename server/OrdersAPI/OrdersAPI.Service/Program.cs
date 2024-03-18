@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrdersAPI.Service;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Services;
 
@@ -28,6 +29,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddScoped<DatabaseSeeder>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +47,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<DatabaseSeeder>();
+    seeder.SeedProviders();
+}
 
 app.Run();
 
