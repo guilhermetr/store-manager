@@ -5,19 +5,19 @@
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item [disabled]="!product.active" (click)="openProductFormDialog()">
+            <button mat-menu-item [disabled]="!product.isActive" (click)="openProductFormDialog()">
                 <mat-icon>edit</mat-icon>
                 <span>Editar</span>
             </button>
-            <button mat-menu-item (click)="product.active ? openDeleteConfirmationDialog() : openReactivateConfirmationDialog()">
-                <mat-icon>{{ product.active ? 'delete' : 'restore_from_trash' }}</mat-icon>
-                <span>{{ product.active ? 'Eliminar' : 'Reativar' }}</span>
+            <button mat-menu-item (click)="product.isActive ? openDeleteConfirmationDialog() : openReactivateConfirmationDialog()">
+                <mat-icon>{{ product.isActive ? 'delete' : 'restore_from_trash' }}</mat-icon>
+                <span>{{ product.isActive ? 'Eliminar' : 'Reativar' }}</span>
             </button>
         </mat-menu>
     </div>
     <hr style="width: 100%;">
     <div class="bottom-row">
         <span class="price">{{ product.price | currency }}</span>
-        <span class="state" [style.background-color]="product.active ? '#C0F8B4' : '#F6F8B4'">{{ product.active ? 'Ativo' : 'Inativo' }}</span>
+        <span class="state" [style.background-color]="product.isActive ? '#C0F8B4' : '#F6F8B4'">{{ product.isActive ? 'Ativo' : 'Inativo' }}</span>
     </div>
 </mat-card>

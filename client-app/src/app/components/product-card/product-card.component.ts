@@ -48,7 +48,7 @@ export class ProductCardComponent implements OnInit {
             console.error('Error eliminating product:', error);
             this.messageDisplayService.displayMessage('Ocorreu um erro ao eliminar o produto. Por favor, tente novamente.');
           }
-        });;
+        });
       }
     });
   }
@@ -64,7 +64,7 @@ export class ProductCardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         var updatedProduct = {...this.product};
-        updatedProduct.active = true;
+        updatedProduct.isActive = true;
         this.productService.updateProduct(updatedProduct).subscribe({
           next: () => {            
             this.messageDisplayService.displayMessage('Produto reativado!');
@@ -73,7 +73,7 @@ export class ProductCardComponent implements OnInit {
             console.error('Error reactivating product:', error);
             this.messageDisplayService.displayMessage('Ocorreu um erro ao reativar o produto. Por favor, tente novamente.');
           }
-        });;
+        });
       }
     });
   }
