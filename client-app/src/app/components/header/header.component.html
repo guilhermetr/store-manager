@@ -7,5 +7,8 @@
         <button mat-button routerLink="products">Produtos</button>
         <button mat-button routerLink="orders">Pedidos</button>
     </div>
-    <div class="welcome-msg">Bem-vindo, <span style="font-weight:bold;">{{ user.username }}</span></div>
+    <div style="text-align: right;">
+        <div class="welcome-msg">Bem-vindo, <span style="font-weight:bold;">{{ user.username }}</span></div>
+        <span class="logout-btn" (click)="logout()">Logout</span>
+    </div>    
 </header>

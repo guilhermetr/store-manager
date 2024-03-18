@@ -30,4 +30,13 @@ header {
 .welcome-msg {
     font-size: large;
 }
+
+.logout-btn {
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: blue;
+}
   
