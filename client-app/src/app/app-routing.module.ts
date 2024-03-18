@@ -23,7 +23,7 @@ const routes: Routes = [
   {
     path: 'orders',
     component: OrderEditComponent,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   { 
     path: '', 

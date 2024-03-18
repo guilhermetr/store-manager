@@ -1,6 +1,3 @@
-import { Product } from "./product.model";
-import { Provider } from "./provider.model";
-
 export interface Order {
     id?: number;
     providerId?: number;
@@ -11,11 +8,12 @@ export interface Order {
 
 export interface OrderItem {
     id?: number;
+    orderId?: number;
     productId?: number;
     quantity?: number;        
 }
 
 export enum OrderStatus {
-    Active,
-    Finished,
+    Active = 0,
+    Finished = 1,
 }
