@@ -58,7 +58,7 @@ namespace ProductsAPI.Service.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateUpdateProductDto>> PostProduct(CreateUpdateProductDto productDto)
+        public async Task<ActionResult<ProductDto>> PostProduct(ProductDto productDto)
         {
             var product = new Product
             {
@@ -77,7 +77,7 @@ namespace ProductsAPI.Service.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, CreateUpdateProductDto productDto)
+        public async Task<IActionResult> PutProduct(int id, ProductDto productDto)
         {
             if (id != productDto.Id)
             {
