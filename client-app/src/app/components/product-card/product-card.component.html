@@ -17,7 +17,7 @@
     </div>
     <hr style="width: 100%;">
     <div class="bottom-row">
-        <span class="price">{{ product.price | currency }}</span>
         <span class="state" [style.background-color]="product.isActive ? '#C0F8B4' : '#F6F8B4'">{{ product.isActive ? 'Ativo' : 'Inativo' }}</span>
+        <span class="price">{{ product.price | currency }}</span>
     </div>
 </mat-card>
