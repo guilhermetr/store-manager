@@ -1,12 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
-using ProductsAPI.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,8 +12,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -28,8 +23,6 @@ builder.Services.AddCors(options =>
             builder.AllowAnyMethod();
         });
 });
-
-builder.Services.AddScoped<LoggingService>();
 
 var app = builder.Build();
 
@@ -43,10 +36,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-

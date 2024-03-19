@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Dtos;
 using ProductsAPI.Service.Models;
@@ -14,10 +14,12 @@ namespace ProductsAPI.Service.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly LoggingService _loggingService;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, LoggingService loggingService)
         {
             _context = context;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -49,6 +51,7 @@ namespace ProductsAPI.Service.Controllers
         {
             if (orderDto.OrderItems == null || orderDto.OrderItems.Count == 0)
             {
+                await _loggingService.LogMessageAsync("Falha ao criar pedido: O pedido deve ter pelo menos 1 produto.");
                 return BadRequest("O pedido deve ter pelo menos 1 produto.");
             }
 
@@ -65,6 +68,8 @@ namespace ProductsAPI.Service.Controllers
                 orderDto.OrderItems[i].Id = orderItemIds[i];
             }
 
+            await _loggingService.LogMessageAsync($"Pedido criado com ID {order.Id}");
+
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, orderDto);
         }
 
@@ -74,22 +79,26 @@ namespace ProductsAPI.Service.Controllers
         {
             if (id != orderDto.Id)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar pedido: ID inválido: {id}");
                 return BadRequest();
             }
 
             var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar pedido: Pedido com ID {id} não encontrado");
                 return NotFound();
             }
 
             if (order.Status == OrderStatus.Finished && orderDto.Status == OrderStatus.Finished)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar pedido: Pedido com ID {id} está finalizado e não pode ser atualizado");
                 return BadRequest("O pedido está finalizado e não pode ser atualizado.");
             }
 
             if (orderDto.OrderItems == null || orderDto.OrderItems.Count == 0)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar pedido: O pedido deve ter pelo menos 1 produto.");
                 return BadRequest("O pedido deve ter pelo menos 1 produto.");
             }
 
@@ -114,6 +123,7 @@ namespace ProductsAPI.Service.Controllers
                 var orderExists = _context.Orders.Any(e => e.Id == id);
                 if (!orderExists)
                 {
+                    await _loggingService.LogMessageAsync($"Falha ao atualizar pedido: Pedido com ID {id} não encontrado");
                     return NotFound();
                 }
                 else
@@ -121,6 +131,8 @@ namespace ProductsAPI.Service.Controllers
                     throw;
                 }
             }
+
+            await _loggingService.LogMessageAsync($"Pedido com ID {order.Id} atualizado");
 
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, orderDto);
         }
@@ -131,11 +143,14 @@ namespace ProductsAPI.Service.Controllers
             var order = await _context.Orders.FindAsync(id);
             if (order == null)
             {
+                await _loggingService.LogMessageAsync($"Falha ao excluir pedido: Pedido com ID {id} não encontrado");
                 return NotFound();
             }
 
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
+
+            await _loggingService.LogMessageAsync($"Pedido com ID {id} excluido");
 
             return NoContent();
         }

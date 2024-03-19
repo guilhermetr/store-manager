@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Dtos;
 using ProductsAPI.Service.Models;
@@ -14,10 +15,12 @@ namespace ProductsAPI.Service.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly LoggingService _loggingService;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, LoggingService loggingService)
         {
             _context = context;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -72,6 +75,8 @@ namespace ProductsAPI.Service.Controllers
 
             productDto.Id = product.Id;
 
+            await _loggingService.LogMessageAsync($"Produto criado com ID {product.Id}");
+
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDto);
         }
 
@@ -81,17 +86,20 @@ namespace ProductsAPI.Service.Controllers
         {
             if (id != productDto.Id)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar produto: ID inválido: {id}");
                 return BadRequest();
             }
 
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar produto: Produto com ID {id} não encontrado");
                 return NotFound();
             }
 
             if (!product.IsActive && !productDto.IsActive)
             {
+                await _loggingService.LogMessageAsync($"Falha ao atualizar produto: Produto com ID {id} está inativo e não pode ser atualizado");
                 return BadRequest("O produto está inativo e não pode ser atualizado.");
             }
 
@@ -108,6 +116,7 @@ namespace ProductsAPI.Service.Controllers
                 var productExists = _context.Products.Any(e => e.Id == id);
                 if (!productExists)
                 {
+                    await _loggingService.LogMessageAsync($"Falha ao atualizar produto: Produto com ID {id} não encontrado");
                     return NotFound();
                 }
                 else
@@ -115,6 +124,8 @@ namespace ProductsAPI.Service.Controllers
                     throw;
                 }
             }
+
+            await _loggingService.LogMessageAsync($"Produto com ID {product.Id} atualizado");
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDto);
         }
@@ -125,12 +136,15 @@ namespace ProductsAPI.Service.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
+                await _loggingService.LogMessageAsync($"Falha ao excluir produto: Produto com ID {id} não encontrado");
                 return NotFound();
             }
 
             product.IsActive = false;
             
             await _context.SaveChangesAsync();
+
+            await _loggingService.LogMessageAsync($"Produto com ID {id} excluido");
 
             return NoContent();
         }
