@@ -8,11 +8,11 @@ using ProductsAPI.Service.DataContext;
 
 #nullable disable
 
-namespace OrdersAPI.Service.Migrations
+namespace OrdersAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318212025_AddProviders")]
-    partial class AddProviders
+    [Migration("20240319125804_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,10 @@ namespace OrdersAPI.Service.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

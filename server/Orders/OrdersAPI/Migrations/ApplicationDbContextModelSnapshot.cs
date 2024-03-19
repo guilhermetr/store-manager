@@ -7,7 +7,7 @@ using ProductsAPI.Service.DataContext;
 
 #nullable disable
 
-namespace OrdersAPI.Service.Migrations
+namespace OrdersAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -47,6 +47,10 @@ namespace OrdersAPI.Service.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

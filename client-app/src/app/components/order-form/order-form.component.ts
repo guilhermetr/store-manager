@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Order, OrderItem, OrderStatus } from 'src/app/models/order.model';
 import { Product } from 'src/app/models/product.model';
 import { Provider } from 'src/app/models/provider.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { MessageDisplayService } from 'src/app/services/message-display.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -24,6 +25,7 @@ export class OrderFormComponent {
     private orderService: OrderService,
     private providerService: ProviderService,
     private productService: ProductService,
+    private authService: AuthService,
     private messageDisplayService: MessageDisplayService,
     private dialogRef: MatDialogRef<OrderFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,13 +33,15 @@ export class OrderFormComponent {
 
   ngOnInit(): void {    
     this.isEditForm = this.data?.order != undefined;
+    const username = this.authService.getUser().username;
     if (this.isEditForm) {
       this.order = {
         ...this.data.order,
-        orderItems: this.data.order.orderItems.map((orderItem: OrderItem) => ({ ...orderItem })) // Create a copy
+        orderItems: this.data.order.orderItems.map((orderItem: OrderItem) => ({ ...orderItem })), // Create a copy
+        createdBy: username,
     };
     } else {
-      this.order = { orderItems: [{}], comments: '', status: OrderStatus.Active };
+      this.order = { orderItems: [{}], comments: '', status: OrderStatus.Active, createdBy: username };
     }
 
     this.providerService.providers$.subscribe((providers: Provider[]) => this.providers = providers);

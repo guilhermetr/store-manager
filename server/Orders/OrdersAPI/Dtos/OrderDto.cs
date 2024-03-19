@@ -9,6 +9,7 @@ namespace ProductsAPI.Service.Dtos
         public List<OrderItemDto> OrderItems { get; set; }
         public string Comments { get; set; }
         public OrderStatus Status { get; set; }
+        public string CreatedBy { get; set; }
 
         public Order ToOrder()
         {
@@ -18,7 +19,8 @@ namespace ProductsAPI.Service.Dtos
                 ProviderId = this.ProviderId,
                 OrderItems = this.OrderItems.Select(item => item.ToOrderItem()).ToList(),
                 Comments = this.Comments,
-                Status = this.Status
+                Status = this.Status,
+                CreatedBy = this.CreatedBy,
             };
         }
     }

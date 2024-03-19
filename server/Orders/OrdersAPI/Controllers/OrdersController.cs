@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using OrdersAPI.Dtos;
 using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Dtos;
 using ProductsAPI.Service.Models;
 using ProductsAPI.Service.Services;
+using System.Net.Http.Headers;
 
 namespace ProductsAPI.Service.Controllers
 {
@@ -15,11 +18,14 @@ namespace ProductsAPI.Service.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly LoggingService _loggingService;
+        private readonly HttpClient _httpClient;
 
-        public OrdersController(ApplicationDbContext context, LoggingService loggingService)
+        public OrdersController(ApplicationDbContext context, LoggingService loggingService, IHttpClientFactory httpClientFactory)
         {
             _context = context;
             _loggingService = loggingService;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7046/");
         }
 
         [HttpGet]
@@ -32,6 +38,69 @@ namespace ProductsAPI.Service.Controllers
 
             return orders;
         }
+
+        [HttpGet("finished-orders")]
+        public async Task<ActionResult<IEnumerable<FinishedOrderDto>>> GetFinishedOrders()
+        {
+            var finishedOrders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .Where(o => o.Status == OrderStatus.Finished)
+                .ToListAsync();
+
+            var orderDtos = new List<FinishedOrderDto>();
+
+            foreach (var order in finishedOrders)
+            {
+                var provider = _context.Providers.Find(order.ProviderId);
+                var orderDto = order.ToFinishedOrderDto(provider.Name);
+                orderDto.OrderItems = await GetOrderItemsAsync(order.OrderItems);
+                orderDtos.Add(orderDto);
+            }
+
+            return orderDtos;
+        }
+
+        private async Task<List<FinishedOrderItemDto>> GetOrderItemsAsync(List<OrderItem> orderItems)
+        {
+            var orderItemDtos = new List<FinishedOrderItemDto>();
+
+            var bearerToken = Request.Headers["Authorization"].FirstOrDefault();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+
+            foreach (var orderItem in orderItems)
+            {
+                var productDto = await GetProductAsync(orderItem.ProductId);
+                if (productDto != null)
+                {
+                    var orderItemDto = new FinishedOrderItemDto
+                    {
+                        Id = orderItem.Id,
+                        ProductId = orderItem.ProductId,
+                        ProductName = productDto.Name,
+                        ProductPrice = productDto.Price,
+                        Quantity = orderItem.Quantity
+                    };
+                    orderItemDtos.Add(orderItemDto);
+                }
+                else
+                {
+                    BadRequest($"Erro ao obter informações do item de pedido com ID {orderItem.Id}");
+                }
+            }
+
+            return orderItemDtos;
+        }
+
+        private async Task<ProductDto> GetProductAsync(int productId)
+        {
+            var productResponse = await _httpClient.GetAsync($"products/{productId}");
+            if (productResponse.IsSuccessStatusCode)
+            {
+                var productContent = await productResponse.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ProductDto>(productContent)!;
+            }
+            return null;
+        }        
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)

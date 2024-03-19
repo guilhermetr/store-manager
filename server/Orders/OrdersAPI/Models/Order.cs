@@ -1,4 +1,5 @@
-﻿using ProductsAPI.Service.Dtos;
+﻿using OrdersAPI.Dtos;
+using ProductsAPI.Service.Dtos;
 
 namespace ProductsAPI.Service.Models
 {
@@ -9,6 +10,7 @@ namespace ProductsAPI.Service.Models
         public List<OrderItem> OrderItems { get; set; }
         public string Comments { get; set; }
         public OrderStatus Status { get; set; }
+        public string CreatedBy { get; set; }
 
         public OrderDto ToDto()
         {
@@ -20,7 +22,20 @@ namespace ProductsAPI.Service.Models
                     ? this.OrderItems.Select(item => item.ToDto()).ToList()
                     : new List<OrderItemDto>(), 
                 Comments = this.Comments,
-                Status = this.Status
+                Status = this.Status,
+                CreatedBy = this.CreatedBy,
+            };
+        }
+
+        public FinishedOrderDto ToFinishedOrderDto(string providerName)
+        {
+            return new FinishedOrderDto
+            {
+                Id = this.Id,
+                ProviderId = this.ProviderId,
+                ProviderName = providerName,
+                Comments = this.Comments,
+                CreatedBy = this.CreatedBy
             };
         }
     }
