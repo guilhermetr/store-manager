@@ -1,7 +1,7 @@
 ﻿using OrdersAPI.Service.Models;
 using ProductsAPI.Service.DataContext;
 
-namespace OrdersAPI.Service
+namespace OrdersAPI.Services
 {
     public class DatabaseSeeder
     {

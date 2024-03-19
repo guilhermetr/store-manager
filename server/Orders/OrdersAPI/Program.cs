@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OrdersAPI.Service;
+using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +29,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<DatabaseSeeder>();
+builder.Services.AddScoped<LoggingService>();
 
 var app = builder.Build();
 

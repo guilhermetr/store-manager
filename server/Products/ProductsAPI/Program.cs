@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Services;
 
@@ -27,6 +28,8 @@ builder.Services.AddCors(options =>
             builder.AllowAnyMethod();
         });
 });
+
+builder.Services.AddScoped<LoggingService>();
 
 var app = builder.Build();
 
