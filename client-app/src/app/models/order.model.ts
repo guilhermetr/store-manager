@@ -4,6 +4,7 @@ export interface Order {
     orderItems: OrderItem[];
     comments: string;
     status: OrderStatus;
+    createdBy: string;
 }
 
 export interface OrderItem {
