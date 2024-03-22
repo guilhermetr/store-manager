@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace OrdersAPI.Service.Services
+namespace Common.Services
 {
     public class TokenAuthorizationFilter : IAsyncAuthorizationFilter
     {

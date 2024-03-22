@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrdersAPI.Service.Dtos;
 using OrdersAPI.Service.DataContext;
-using OrdersAPI.Service.Services;
+using Common.Services;
 
 namespace OrdersAPI.Service.Controllers
 {

@@ -2,11 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OrdersAPI.Service.Dtos;
-using OrdersAPI.Services;
 using OrdersAPI.Service.Models;
 using System.Net.Http.Headers;
 using OrdersAPI.Service.DataContext;
-using OrdersAPI.Service.Services;
+using Common.Services;
 
 namespace OrdersAPI.Service.Controllers
 {

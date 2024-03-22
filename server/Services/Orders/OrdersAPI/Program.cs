@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrdersAPI.Services;
 using OrdersAPI.Service.DataContext;
+using Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
