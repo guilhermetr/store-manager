@@ -1,5 +1,5 @@
-﻿using OrdersAPI.Service.Models;
-using ProductsAPI.Service.DataContext;
+﻿using OrdersAPI.Service.DataContext;
+using OrdersAPI.Service.Models;
 
 namespace OrdersAPI.Services
 {

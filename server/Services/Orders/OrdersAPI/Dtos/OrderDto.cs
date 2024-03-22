@@ -1,6 +1,6 @@
-﻿using ProductsAPI.Service.Models;
+﻿using OrdersAPI.Service.Models;
 
-namespace ProductsAPI.Service.Dtos
+namespace OrdersAPI.Service.Dtos
 {
     public class OrderDto
     {

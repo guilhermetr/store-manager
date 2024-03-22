@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using OrdersAPI.Dtos;
+using OrdersAPI.Service.Dtos;
 using OrdersAPI.Services;
-using ProductsAPI.Service.DataContext;
-using ProductsAPI.Service.Dtos;
-using ProductsAPI.Service.Models;
-using ProductsAPI.Service.Services;
+using OrdersAPI.Service.Models;
 using System.Net.Http.Headers;
+using OrdersAPI.Service.DataContext;
+using OrdersAPI.Service.Services;
 
-namespace ProductsAPI.Service.Controllers
+namespace OrdersAPI.Service.Controllers
 {
     [TypeFilter(typeof(TokenAuthorizationFilter))]
     [ApiController]

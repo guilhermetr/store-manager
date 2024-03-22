@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OrdersAPI.Services;
 using ProductsAPI.Service.DataContext;
 using ProductsAPI.Service.Dtos;
 using ProductsAPI.Service.Models;
-using ProductsAPI.Service.Services;
+using Common.Services;
+
 
 namespace ProductsAPI.Service.Controllers
 {

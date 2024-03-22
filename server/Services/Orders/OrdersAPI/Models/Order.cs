@@ -1,7 +1,6 @@
-﻿using OrdersAPI.Dtos;
-using ProductsAPI.Service.Dtos;
+﻿using OrdersAPI.Service.Dtos;
 
-namespace ProductsAPI.Service.Models
+namespace OrdersAPI.Service.Models
 {
     public class Order
     {

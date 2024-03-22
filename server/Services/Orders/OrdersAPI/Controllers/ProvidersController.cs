@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrdersAPI.Service.Dtos;
-using ProductsAPI.Service.DataContext;
-using ProductsAPI.Service.Services;
+using OrdersAPI.Service.DataContext;
+using OrdersAPI.Service.Services;
 
 namespace OrdersAPI.Service.Controllers
 {

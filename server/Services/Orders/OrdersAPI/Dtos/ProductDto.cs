@@ -1,4 +1,4 @@
-﻿namespace OrdersAPI.Dtos
+﻿namespace OrdersAPI.Service.Dtos
 {
     public class ProductDto
     {
