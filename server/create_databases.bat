@@ -1,15 +1,15 @@
-cd Authentication/AuthenticationAPI
+cd Services/Authentication/AuthenticationAPI
 dotnet ef database update
-cd ../..
+cd ../../..
 
-cd Products/ProductsAPI
+cd Services/Products/ProductsAPI
 dotnet ef database update
-cd ../..
+cd ../../..
 
-cd Orders/OrdersAPI
+cd Services/Orders/OrdersAPI
 dotnet ef database update
-cd ../..
+cd ../../..
 
-cd Logging/LoggingAPI
+cd Services/Logging/LoggingAPI
 dotnet ef database update
-cd ../..
+cd ../../..

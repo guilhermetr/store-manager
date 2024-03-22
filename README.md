@@ -3,7 +3,7 @@
 This project is a solution designed for managing a store's operations efficiently. It consists of both backend and frontend components.
 
 ## Backend
-The backend is built on a microservices architecture using .NET 6 technologies. It consists of four main services:
+The backend is built on a microservices architecture using .NET 6 technologies. It includes the following main services:
 
 1. **Authentication Service**:
    - Provides a Web API for user authentication.
@@ -21,9 +21,12 @@ The backend is built on a microservices architecture using .NET 6 technologies. 
    - Helps monitoring system changes and activities.
    - Features a Web API endpoint for logging events and a Log Viewer Console application for log viewing.
 
+5. **Common Project**:
+   - A centralized repository for shared functionalities, models, utilities, and services used across all microservices.   
+   - Integrated into each service via a NuGet package promoting the decoupled architecture of microsservices.
+
 ## Frontend
-The frontend of the Store Manager project is a client application developed using Angular. It interacts with the backend through the Orders and Products services.
-Users can perform all CRUD operations on products and orders through an intuitive interface.
+The frontend of the Store Manager project is a client application developed using Angular. Users can register for new accounts and log in, interacting directly with the Authentication Service. Once logged in, users are issued a JWT token, enabling secure and authorized interactions with the Orders and Products services for all CRUD operations (which can be performed through an intuitive interface).
 
 ## Running the Project
 

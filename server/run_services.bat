@@ -1,15 +1,15 @@
-cd Authentication/AuthenticationAPI
+cd Services/Authentication/AuthenticationAPI
 start cmd /c "dotnet run"
-cd ../..
+cd ../../..
 
-cd Products/ProductsAPI
+cd Services/Products/ProductsAPI
 start cmd /c "dotnet run"
-cd ../..
+cd ../../..
 
-cd Orders/OrdersAPI
+cd Services/Orders/OrdersAPI
 start cmd /c "dotnet run"
-cd ../..
+cd ../../..
 
-cd Logging/LoggingAPI
+cd Services/Logging/LoggingAPI
 start cmd /c "dotnet run"
-cd ../..
+cd ../../..
