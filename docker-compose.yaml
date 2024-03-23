@@ -1,0 +1,100 @@
+version: '3.8'
+services:
+  authentication-service:
+    build:
+      context: ./server/Services/Authentication/AuthenticationAPI
+    ports:
+      - "5001:80"
+    depends_on:
+      - auth-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=auth-db;Database=AuthDB;User=sa;Password=CH;Yp?Efu<+ShQ9bme8*B;
+  auth-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Yp?Efu<+ShQ9bme8*B"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - auth-db-data:/var/opt/mssql
+
+  products-service:
+    build:
+      context: ./server
+      dockerfile: Services/Products/ProductsAPI/Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      - products-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=products-db;Database=ProductsDB;User=sa;Password=CH;Yp?Efu<+ShQ9bme8*B;
+  products-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Yp?Efu<+ShQ9bme8*B"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    volumes:
+      - products-db-data:/var/opt/mssql
+
+  orders-service:
+    build:
+      context: ./server
+      dockerfile: Services/Orders/OrdersAPI/Dockerfile
+    ports:
+      - "5003:80"
+    depends_on:
+      - orders-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=orders-db;Database=OrdersDB;User=sa;Password=CH;Yp?Efu<+ShQ9bme8*B;
+  orders-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Yp?Efu<+ShQ9bme8*B"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+    volumes:
+      - orders-db-data:/var/opt/mssql
+
+  logging-service:
+    build:
+      context: ./server/Services/Logging/LoggingAPI
+    ports:
+      - "5004:80"
+    depends_on:
+      - logging-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=logging-db;Database=LoggingDB;User=sa;Password=CH;Yp?Efu<+ShQ9bme8*B;
+  logging-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Yp?Efu<+ShQ9bme8*B"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1436:1433"
+    volumes:
+      - logging-db-data:/var/opt/mssql
+
+  frontend:
+    build:
+      context: ./client-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - authentication-service
+      - products-service
+      - orders-service
+      
+volumes:
+  auth-db-data:
+  products-db-data:
+  orders-db-data:
+  logging-db-data:
+
+networks:
+  default:
+    name: store_manager_network
+
